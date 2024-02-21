@@ -1,11 +1,21 @@
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import "./App.css";
-import { Join } from "./components/CreateButton";
+import { RoomProvider } from "./context/roomContext";
+import { Home } from "./pages/Home";
+import { Room } from "./pages/Room";
 
 function App() {
     return (
-        <div className="App flex items-center justify-center w-screen h-screen">
-            <Join />
-        </div>
+        <BrowserRouter>
+            <RoomProvider>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/room/:id" element={<Room />} />
+                </Routes>
+            </RoomProvider>
+        </BrowserRouter>
     );
 }
 
