@@ -2,8 +2,11 @@ import { Socket } from "socket.io";
 import { v4 as uuidv4 } from "uuid";
 
 export const roomHandler = (socket: Socket) => {
-    const createRoom = () => {
-        const roomId = uuidv4();
+    const createRoom = ({ roomId }: { roomId: string }) => {
+        // const roomId = uuidv4();
+        if(!roomId){
+            roomId = uuidv4();
+        }
         socket.join(roomId);
         socket.emit("room-created", { roomId });
         console.log(`user created the room ${roomId}`);
