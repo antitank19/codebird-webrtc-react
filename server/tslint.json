@@ -3,9 +3,16 @@
     "defaultSeverity": "error",
     "rules": {
         "no-console": {
-        "severity": "warning",
-        "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+            "severity": "warning",
+            "options": [
+                "debug",
+                "info",
+                "log",
+                "time",
+                "timeEnd",
+                "trace"
+            ]
         }
     },
-    "jsRules": { }
+    "jsRules": {}
 }
