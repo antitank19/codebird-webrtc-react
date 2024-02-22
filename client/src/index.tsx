@@ -3,9 +3,10 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { RoomProvider } from "./context/RoomContext";
 import { Home } from "./pages/Home";
 import { Room } from "./pages/Room";
+import { RoomProvider } from "./context/roomContext";
+// import { RoomProvider } from "./context/RoomContext";
 
 ReactDOM.render(
     <React.StrictMode>

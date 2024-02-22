@@ -9,8 +9,11 @@ interface IRoomParams {
 const rooms: Record<string, string[]> = {};
 
 export const roomHandler = (socket: Socket) => {
-    const createRoom = ({ peerId }: { peerId: string }) => {
-        const roomId = uuidV4();
+    // const createRoom = ({ peerId }: { peerId: string }) => {
+    const createRoom = ({ roomId, peerId }: IRoomParams) => {
+        if(!roomId){
+            roomId = uuidV4();
+        }
         rooms[roomId] = [];
         socket.emit("room-created", { roomId });
         joinRoom({ roomId, peerId });
@@ -25,7 +28,7 @@ export const roomHandler = (socket: Socket) => {
                 participants: rooms[roomId],
             });
         } else {
-            createRoom({ peerId });
+            createRoom({ roomId, peerId });
         }
 
         socket.on("disconnect", () => {

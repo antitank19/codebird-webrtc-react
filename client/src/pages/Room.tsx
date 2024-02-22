@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { VideoPlayer } from "../components/VideoPlayer";
-import { RoomContext } from "../context/RoomContext";
+import { RoomContext } from "../context/roomContext";
 
 export const Room = () => {
     const { id } = useParams();
