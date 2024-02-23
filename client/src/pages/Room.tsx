@@ -8,9 +8,14 @@ export const Room = () => {
     const { ws, me, peers, stream } = useContext(RoomContext);
 
     useEffect(() => {
+        alert("useEffect");
         me?.on("open", () => {
-            ws.emit("join-room", { roomId: id, peerId: me._id });
+            // ws.emit("join-room", { roomId: id, peerId: me._id });
+            alert("useEffect on");
         });
+        if(me&&me.on){
+            ws.emit("join-room", { roomId: id, peerId: me._id });
+        }
     }, [id, me, ws]);
 
     return (

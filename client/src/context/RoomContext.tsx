@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer, useState } from "react";
-import Peer from "peerjs";
+import Peer, { MediaConnection } from "peerjs";
 import { v4 as uuidV4 } from "uuid";
 
 import socketIOClient from "socket.io-client";
@@ -24,11 +24,13 @@ export const RoomProvider: React.FunctionComponent = ({ children }) => {
     };
 
     const handleUserList = ({ participants }: { participants: string[] }) => {
+        alert("handleUserList")
         participants.map((peerId) => {
             const call = stream && me?.call(peerId, stream);
             console.log("call", call);
             call?.on("stream", (userVideoStream: MediaStream) => {
                 console.log({ addPeerAction });
+                console.log("handleUserList call?.on(stream", userVideoStream);
                 dispatch(addPeerAction(peerId, userVideoStream));
             });
         });
@@ -41,12 +43,19 @@ export const RoomProvider: React.FunctionComponent = ({ children }) => {
     useEffect(() => {
         const meId = uuidV4();
         const peer = new Peer(meId);
+        console.log("useEffect[] peer", peer);
         setMe(peer);
         try {
-            navigator.mediaDevices
-                .getUserMedia({ video: true, audio: true })
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then((stream) => {
                     setStream(stream);
+                })
+                .catch((error) => {
+                    console.log(' getUserMedia error', error);
+                    navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+                        .then((stream) => {
+                            setStream(stream);
+                        })
                 });
         } catch (err) {
             console.error({ err });
@@ -60,14 +69,14 @@ export const RoomProvider: React.FunctionComponent = ({ children }) => {
         if (!stream) return;
         if (!me) return;
 
-        ws.on(
-            "user-joined",
-            ({ peerId }: { roomId: string; peerId: string }) => {
-                const call = stream && me.call(peerId, stream);
-                call.on("stream", (userVideoStream: MediaStream) => {
-                    dispatch(addPeerAction(peerId, userVideoStream));
-                });
-            }
+        ws.on("user-joined", ({ peerId }: { roomId: string; peerId: string }) => {
+            alert("ws receive user-joined call"+stream?"true":"false");
+            const call = stream && me.call(peerId, stream);
+            call.on("stream", (userVideoStream: MediaStream) => {
+                alert("ws receive user-joined 2");
+                dispatch(addPeerAction(peerId, userVideoStream));
+            });
+        }
         );
 
         me.on("call", (call) => {
